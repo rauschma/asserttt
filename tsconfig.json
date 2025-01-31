@@ -1,0 +1,43 @@
+{
+  "include": ["src/**/*", "test/**/*"],
+  "compilerOptions": {
+    // Specify explicitly (don’t derive from source file paths):
+    "rootDir": ".",
+    "outDir": "dist",
+
+    //===== Output: JavaScript =====
+    "target": "ES2023",
+    "module": "Node16", // sets up "moduleResolution"
+    // Emptily imported modules must exist
+    "noUncheckedSideEffectImports": true,
+    //
+    "sourceMap": true, // .js.map files
+
+    //===== Interoperability: help external tools =====
+    // Helps tools that compile .ts to .js by enforcing
+    // `type` modifiers for type-only imports etc.
+    "verbatimModuleSyntax": true,
+
+    //===== Type checking =====
+    "strict": true, // activates several useful options
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+
+    //===== Output: declarations =====
+    "declaration": true, // .d.ts files
+    // “Go to definition” jumps to TS source etc.:
+    "declarationMap": true, // .d.ts.map files
+
+    //===== Interoperability: help external tools =====
+    // Helps tools that compile .ts to .d.ts by enforcing
+    // return type annotations for exported functions, etc.
+    "isolatedDeclarations": true,
+
+    //===== Misc =====
+    "lib": ["ES2023"], // don’t provide types for DOM
+  }
+}
