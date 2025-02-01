@@ -1,9 +1,9 @@
-# assertt: minimal API for testing types
+# asserttt: minimal API for testing types
 
 **Experimental API, currently in testing. Feedback welcome!**
 
 ```js
-npm install assertt
+npm install asserttt
 ```
 
 * Use cases:
@@ -22,11 +22,11 @@ If a file contains type tests, it’s not enough to run it, we must also type-ch
 
 * Package [ts-expect](https://github.com/TypeStrong/ts-expect) inspired this package. It’s very similar. This package uses different names and has a utility type `Assert` (which doesn’t produce runtime code):
   ```ts
-  type _ = Assert<Equal<X,Y>>; // assertt
+  type _ = Assert<Equal<X,Y>>; // asserttt
   expectType<TypeEqual<X, Y>>(true); // ts-expect
   ```
 
-* The type-challenges repository has [a module with utility types for exercises](https://github.com/type-challenges/type-challenges/blob/main/utils/index.d.ts). How is assertt different?
+* The type-challenges repository has [a module with utility types for exercises](https://github.com/type-challenges/type-challenges/blob/main/utils/index.d.ts). How is asserttt different?
   * Smaller API
   * Different names
   * Implements boolean NOT via a helper type `Not` (vs. two versions of the same utility type).
@@ -66,7 +66,7 @@ assertType<number>(n);
 ### Using the utility types in a TypeScript Playground
 
 ```ts
-import type { Assert, Equal } from 'assertt';
+import type { Assert, Equal } from 'asserttt';
 ```
 
 <!-- ############################################################ -->

@@ -1,23 +1,23 @@
 {
-  "name": "assertt",
+  "name": "asserttt",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rauschma/assertt.git"
+    "url": "git+https://github.com/rauschma/asserttt.git"
   },
   "author": "Axel Rauschmayer",
   "exports": {
-    ".": "./dist/src/assertt.js"
+    ".": "./dist/src/asserttt.js"
   },
   "// files": [
     "We can jump to TS source code, thanks to declarationMap:true in tsconfig.json",
-    "src/assertt.ts",
-    "dist/src/assertt.js",
-    "dist/src/assertt.js.map",
-    "dist/src/assertt.d.ts",
-    "dist/src/assertt.d.ts.map"
+    "src/asserttt.ts",
+    "dist/src/asserttt.js",
+    "dist/src/asserttt.js.map",
+    "dist/src/asserttt.d.ts",
+    "dist/src/asserttt.d.ts.map"
   ],
   "files": [
     "package.json",

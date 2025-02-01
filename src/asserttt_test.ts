@@ -2,7 +2,7 @@
 // * Therefore, the tests succeed if you open it in a TypeScript editor and
 //   see no errors.
 
-import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'assertt';
+import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'asserttt';
 
 //========== Predicates ==========
 
