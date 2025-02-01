@@ -44,37 +44,65 @@ If a file contains type tests, it’s not enough to run it, we must also type-ch
 
 ## Usage
 
-### Asserting a type predicate invocation `P`: `Assert<P>`
+[TypeScript Playground](https://www.typescriptlang.org/play/?#code/JYWwDg9gTgLgBAbzjAnmApnAggZx+2AGjgEM8CYAVNdY1DbPYAcwDsSAjAG1uRrgCiARwCuJLnX4CAHjHSsAJjkkMAchHgBfOADMoEEHADkZfLBgwjAbgBQNgPT2AvC9dvGZmMFbM+GHHBuQU52CDZwfpgACiTAUAA8ABoAfIFwANqJxIkAurYR9JgA+gCMabie8cJiXPExcfEmRsnE6U3ETTnJyfmRcEUATOXksPHqMFWi4nWxCU0tGUbSRh3LXd22mqHhfUVp6TsRFRTxFSzs3OjxrCIgHATEJQMAzN2Ehx4nMnKKOI0kK2MAIAPkYOM0Wjs8jYtjYwgV+KpbgAlEg+K4AVTAGCgcHQsnkSjgNzuD2wAGNyXiCb9ibd7lB0jl9l1Ah8sTjqT8iVhKW0eD4YAALIw5D4RAD8FPJ4rgAC44EiQKj0fEOWT0gA6bW88nEXX8+TMYWiro7XqFfrDSrVaYfJUq5hXV7vCIRdIABkexAGYoiGxhdkcwXcx1g3l8hQCEB0cAAbuIROgAiHXHZyRBWDh4Kw0s84ABqOAlWymCjUDDXekEZIAClYAEpbA5nKmnHAolB0ApgOSSHI4AADcaDwJt7YIhh7dsHN2fUa22rjeIwKBJhY6cT4N4fMMTRdjDTxTdcbd0NfoHdzveTGqHiYcCAQHhohaP5-oV+QiLQrZAA)
 
 ```ts
-type Pair<X> = [X, X];
-type _1 = Assert<Equal<Pair<'a'>, ['a', 'a']>>;
-type _2 = Assert<Not<Equal<Pair<'a'>, ['x', 'x']>>>;
+import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'asserttt';
 
-type _ = [
-  Assert<Assignable<number, 123>>,
-  Assert<Extends<'a', 'a'|'b'>>,
-];
+//========== Asserting types ==========
+
+{
+  type Pair<X> = [X, X];
+  type _1 = Assert<Equal<Pair<'a'>, ['a', 'a']>>;
+  type _2 = Assert<Not<Equal<Pair<'a'>, ['x', 'x']>>>;
+}
+
+{
+  type _ = [
+    Assert<Assignable<number, 123>>,
+    Assert<Extends<'a', 'a'|'b'>>,
+  ];
+}
+
+{
+  type NumRange<Upper extends number, Acc extends number[] = []> =
+    Upper extends Acc['length']
+      ? Acc
+      : NumRange<Upper, [...Acc, Acc['length']]>
+  ;
+  type _ = Assert<Equal<
+    NumRange<3>,
+    [0, 1, 2]
+  >>;
+}
+
+//========== Asserting types of values ==========
+
+const n = 3 + 1;
+assertType<number>(n);
+
+//========== Predicate `Not` ==========
+
+{
+  type _ = [
+    Assert<Equal<Not<true>, false>>,
+    Assert<Equal<Not<false>, true>>,
+    Assert<Equal<Not<boolean>, boolean>>,
+  ];
+}
 ```
 
-#### Included type predicates
+### Included _predicates_ (boolean result)
+
+Comparing types:
 
 * `Equal<X, Y>`
 * `Extends<Sub, Sup>`
 * `Assignable<Target, Source>`
 
-### Asserting the type of a value: `assertType<T>(v)`
+Boolean operations:
 
-```ts
-const n = 3 + 1;
-assertType<number>(n);
-```
-
-### Using the utility types in a TypeScript Playground
-
-```ts
-import type { Assert, Equal } from 'asserttt';
-```
+* `Not<B>`
 
 <!-- ############################################################ -->
 

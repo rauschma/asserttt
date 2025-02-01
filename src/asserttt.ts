@@ -1,4 +1,17 @@
-//========== Predicates ==========
+//========== Asserting ==========
+
+/**
+ * - Is type `_T` assignable to `true`
+ * - Based on code by Blaine Bublitz.
+ */
+export type Assert<_T extends true> = void;
+
+/**
+ * Is the type of `_value` assignable to `T`?
+ */
+export function assertType<T>(_value: T): void { }
+
+//========== Predicates: comparing types ==========
 
 /**
  * - Is type `X` equal to type `Y` (with `any` only being equal to itself)?
@@ -19,20 +32,9 @@ export type Extends<Sub, Sup> = Sub extends Sup ? true : false;
  */
 export type Assignable<Target, Source> = Source extends Target ? true : false;
 
+//========== Predicates: boolean operations ==========
+
 /**
  * Boolean NOT for type `B`.
  */
 export type Not<B extends boolean> = B extends true ? false : true;
-
-//========== Asserting ==========
-
-/**
- * - Is type `_T` assignable to `true`
- * - Based on code by Blaine Bublitz.
- */
-export type Assert<_T extends true> = void;
-
-/**
- * Is the type of `_value` assignable to `T`?
- */
-export function assertType<T>(_value: T): void { }

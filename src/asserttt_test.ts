@@ -4,16 +4,6 @@
 
 import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'asserttt';
 
-//========== Predicates ==========
-
-{
-  type _ = [
-    Assert<Equal<Not<true>, false>>,
-    Assert<Equal<Not<false>, true>>,
-    Assert<Equal<Not<boolean>, boolean>>,
-  ];
-}
-
 //========== Asserting types ==========
 
 {
@@ -45,3 +35,13 @@ import { type Assert, assertType, type Assignable, type Equal, type Extends, typ
 
 const n = 3 + 1;
 assertType<number>(n);
+
+//========== Predicate `Not` ==========
+
+{
+  type _ = [
+    Assert<Equal<Not<true>, false>>,
+    Assert<Equal<Not<false>, true>>,
+    Assert<Equal<Not<boolean>, boolean>>,
+  ];
+}
