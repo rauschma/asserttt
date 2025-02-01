@@ -4,7 +4,7 @@
 
 import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'asserttt';
 
-//========== Asserting types ==========
+//========== Asserting types: Assert<B> ==========
 
 {
   type Pair<X> = [X, X];
@@ -31,12 +31,12 @@ import { type Assert, assertType, type Assignable, type Equal, type Extends, typ
   >>;
 }
 
-//========== Asserting types of values ==========
+//========== Asserting types of values: assertType<T>(v)  ==========
 
 const n = 3 + 1;
 assertType<number>(n);
 
-//========== Predicate `Not` ==========
+//========== Predicate `Not<B>` ==========
 
 {
   type _ = [

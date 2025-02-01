@@ -44,12 +44,12 @@ If a file contains type tests, it’s not enough to run it, we must also type-ch
 
 ## Usage
 
-[TypeScript Playground](https://www.typescriptlang.org/play/?#code/JYWwDg9gTgLgBAbzjAnmApnAggZx+2AGjgEM8CYAVNdY1DbPYAcwDsSAjAG1uRrgCiARwCuJLnX4CAHjHSsAJjkkMAchHgBfOADMoEEHADkZfLBgwjAbgBQNgPT2AvC9dvGZmMFbM+GHHBuQU52CDZwfpgACiTAUAA8ABoAfIFwANqJxIkAurYR9JgA+gCMabie8cJiXPExcfEmRsnE6U3ETTnJyfmRcEUATOXksPHqMFWi4nWxCU0tGUbSRh3LXd22mqHhfUVp6TsRFRTxFSzs3OjxrCIgHATEJQMAzN2Ehx4nMnKKOI0kK2MAIAPkYOM0Wjs8jYtjYwgV+KpbgAlEg+K4AVTAGCgcHQsnkSjgNzuD2wAGNyXiCb9ibd7lB0jl9l1Ah8sTjqT8iVhKW0eD4YAALIw5D4RAD8FPJ4rgAC44EiQKj0fEOWT0gA6bW88nEXX8+TMYWiro7XqFfrDSrVaYfJUq5hXV7vCIRdIABkexAGYoiGxhdkcwXcx1g3l8hQCEB0cAAbuIROgAiHXHZyRBWDh4Kw0s84ABqOAlWymCjUDDXekEZIAClYAEpbA5nKmnHAolB0ApgOSSHI4AADcaDwJt7YIhh7dsHN2fUa22rjeIwKBJhY6cT4N4fMMTRdjDTxTdcbd0NfoHdzveTGqHiYcCAQHhohaP5-oV+QiLQrZAA)
+[TypeScript Playground](https://www.typescriptlang.org/play/?#code/JYWwDg9gTgLgBAbzjAnmApnAggZx+2AGjgEM8CYAVNdY1DbPYAcwDsSAjAG1uRrgCiARwCuJLnX4CAHjHSsAJjkkMAchHgBfOADMoEEHADkZfLBgwjAbgBQNgPT2AvC9dvGZmMFbM+GHABcHhQAPABCAHxwbjFOdgg2cH6YAAokwFAhABpRTnAA2lnEWQC6tkn0mAD6AIzRwbAhwmJcIWkZISZGEcT5XcRdJRER5clwVQBM9bieIeowTaLibemZXT0FRtJGA9tDw7aa8YljVfX5J0kzoTMs7NzoIawiIBwExDUTAMzDhJcNCxkckUOE6JB2xnBAB8jBxuj0TmUbEcbAkKvxVC8AEokHyPACqYAwUDg6Fk8iUcGer3e2AAxnTSeSQVSXm8oPkSuchtF-oTiUzgZSsAy+jwfDAABZGEr-JIAfnpdLlcCCmJAOLxIX5tPyADoDSK6cQjWL5MwpTKhidRpVxtNyI1mst-urNcxHj8-kkkvkAAwfYgTWVJA7IuyOWLua6wby+So4OAQHRwABu4hE6ECpEdVBoIUoEQAFKmAJRJKOuOx0iCsHDwVj1L5wADUcBqtlMFGoGCebIIxdYpdsDmclbyKSg6AUwDpJDkcAABvNwhFF9Fx8d0QwznkLj6AYsWnMNCEYFBMxsdOJ8L9-jHAUtWivr1xb3QL+g7weH0fliuOAgCAeFxDZAOA9BQIRJIkSOIA)
 
 ```ts
 import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'asserttt';
 
-//========== Asserting types ==========
+//========== Asserting types: Assert<B> ==========
 
 {
   type Pair<X> = [X, X];
@@ -76,12 +76,12 @@ import { type Assert, assertType, type Assignable, type Equal, type Extends, typ
   >>;
 }
 
-//========== Asserting types of values ==========
+//========== Asserting types of values: assertType<T>(v)  ==========
 
 const n = 3 + 1;
 assertType<number>(n);
 
-//========== Predicate `Not` ==========
+//========== Predicate `Not<B>` ==========
 
 {
   type _ = [
