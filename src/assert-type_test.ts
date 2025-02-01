@@ -2,7 +2,7 @@
 // * Therefore, the tests succeed if you open it in a TypeScript editor and
 //   see no errors.
 
-import { type Assert, assertType, type AssignableFrom, type Equal, type Extends, type Not } from './assert-type.js';
+import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from './assert-type.js';
 
 //========== Predicates ==========
 
@@ -24,7 +24,7 @@ import { type Assert, assertType, type AssignableFrom, type Equal, type Extends,
 
 {
   type _ = [
-    Assert<AssignableFrom<number, 123>>,
+    Assert<Assignable<number, 123>>,
     Assert<Extends<'a', 'a'|'b'>>,
   ];
 }

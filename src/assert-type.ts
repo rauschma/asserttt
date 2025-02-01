@@ -17,7 +17,7 @@ export type Extends<Sub, Sup> = Sub extends Sup ? true : false;
 /**
  * Is type `Target` assignable from type `Source`?
  */
-export type AssignableFrom<Target, Source> = Source extends Target ? true : false;
+export type Assignable<Target, Source> = Source extends Target ? true : false;
 
 /**
  * Boolean NOT for type `B`.
