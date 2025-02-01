@@ -2,6 +2,24 @@
 
 **Experimental API, currently in testing. Feedback welcome!**
 
+---
+
+Table of contents:
+
+* [About asserttt](#about-asserttt)
+* [Complementary tools](#complementary-tools)
+* [Usage](#usage)
+* [How does the code work?](#how-does-the-code-work)
+* [Related work](#related-work)
+* [Potential future additions](#potential-future-additions)
+* [Acknowledgements](#acknowledgements)
+
+---
+
+<!-- ############################################################ -->
+
+## About asserttt
+
 ```js
 npm install asserttt
 ```
@@ -11,27 +29,16 @@ npm install asserttt
   * Testing utility types
 * No non-dev dependencies
 
-### Complementary tools
+<!-- ############################################################ -->
+
+## Complementary tools
 
 If a file contains type tests, it’s not enough to run it, we must also type-check it:
 
 * [tsx (TypeScript Execute)](https://www.npmjs.com/package/tsx) is a tool that type-checks files before running them.
+  * It works well with the Mocha test runner: [example setup](https://github.com/mochajs/mocha-examples/tree/main/packages/typescript-tsx-esm-import)
 * [ts-expect-error](https://www.npmjs.com/package/ts-expect-error) additionally checks if each `@ts-expect-error` annotation prevents the right kind of error.
-
-### Related work
-
-* Package [ts-expect](https://github.com/TypeStrong/ts-expect) inspired this package. It’s very similar. This package uses different names and has a utility type `Assert` (which doesn’t produce runtime code):
-  ```ts
-  type _ = Assert<Equal<X,Y>>; // asserttt
-  expectType<TypeEqual<X, Y>>(true); // ts-expect
-  ```
-
-* The type-challenges repository has [a module with utility types for exercises](https://github.com/type-challenges/type-challenges/blob/main/utils/index.d.ts). How is asserttt different?
-  * Smaller API
-  * Different names
-  * Implements boolean NOT via a helper type `Not` (vs. two versions of the same utility type).
-
-* [eslint-plugin-expect-type](https://www.npmjs.com/package/eslint-plugin-expect-type) supports an elegant notation but requires a special tool (eslint) for checking.
+* [Markcheck](https://github.com/rauschma/markcheck) tests Markdown code blocks.
 
 <!-- ############################################################ -->
 
@@ -127,6 +134,23 @@ type Assert<_T extends true> = void;
 ```
 
 Alas, we can’t conditionally produce errors at the type level. That’s why we need to resort to a type parameter whose `extends` constraint requires it to be assignable to `true`.
+
+<!-- ############################################################ -->
+
+## Related work
+
+* Package [ts-expect](https://github.com/TypeStrong/ts-expect) inspired this package. It’s very similar. This package uses different names and has a utility type `Assert` (which doesn’t produce runtime code):
+  ```ts
+  type _ = Assert<Equal<X,Y>>; // asserttt
+  expectType<TypeEqual<X, Y>>(true); // ts-expect
+  ```
+
+* The type-challenges repository has [a module with utility types for exercises](https://github.com/type-challenges/type-challenges/blob/main/utils/index.d.ts). How is asserttt different?
+  * Smaller API
+  * Different names
+  * Implements boolean NOT via a helper type `Not` (vs. two versions of the same utility type).
+
+* [eslint-plugin-expect-type](https://www.npmjs.com/package/eslint-plugin-expect-type) supports an elegant notation but requires a special tool (eslint) for checking.
 
 <!-- ############################################################ -->
 
