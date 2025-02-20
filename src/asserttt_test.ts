@@ -2,7 +2,7 @@
 // * Therefore, the tests succeed if you open it in a TypeScript editor and
 //   see no errors.
 
-import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'asserttt';
+import { type Assert, assertType, type Assignable, type Equal, type Extends, type Includes, type Not } from 'asserttt';
 
 //========== Asserting types: Assert<B> ==========
 
@@ -15,7 +15,12 @@ import { type Assert, assertType, type Assignable, type Equal, type Extends, typ
 {
   type _ = [
     Assert<Assignable<number, 123>>,
-    Assert<Extends<'a', 'a'|'b'>>,
+
+    Assert<Extends<Array<string>, Object>>,
+    Assert<Not<Extends<Array<string>, RegExp>>>,
+
+    Assert<Includes<'a'|'b', 'a'>>,
+    Assert<Includes<'a'|'b'|'c', 'a'|'c'>>,
   ];
 }
 

@@ -23,14 +23,19 @@ export type Equal<X, Y> =
 ;
 
 /**
- * Does type `Sub` extend type `Sup`?
+ * Does type `Sub` extend type `Super`?
  */
-export type Extends<Sub, Sup> = Sub extends Sup ? true : false;
+export type Extends<Sub, Super> = Sub extends Super ? true : false;
 
 /**
  * Is type `Target` assignable from type `Source`?
  */
 export type Assignable<Target, Source> = Source extends Target ? true : false;
+
+/**
+ * Is type `Subset` a subset of type `Superset`?
+ */
+export type Includes<Superset, Subset> = Subset extends Superset ? true : false;
 
 //========== Predicates: boolean operations ==========
 

@@ -44,10 +44,10 @@ If a file contains type tests, it’s not enough to run it, we must also type-ch
 
 ## Usage
 
-[TypeScript Playground](https://www.typescriptlang.org/play/?#code/JYWwDg9gTgLgBAbzjAnmApnAggZx+2AGjgEM8CYAVNdY1DbPYAcwDsSAjAG1uRrgCiARwCuJLnX4CAHjHSsAJjkkMAchHgBfOADMoEEHADkZfLBgwjAbgBQNgPT2AvC9dvGZmMFbM+GHABcHhQAPABCAHxwbjFOdgg2cH6YAAokwFAhABpRTnAA2lnEWQC6tkn0mAD6AIzRwbAhwmJcIWkZISZGEcT5XcRdJRER5clwVQBM9bieIeowTaLibemZXT0FRtJGA9tDw7aa8YljVfX5J0kzoTMs7NzoIawiIBwExDUTAMzDhJcNCxkckUOE6JB2xnBAB8jBxuj0TmUbEcbAkKvxVC8AEokHyPACqYAwUDg6Fk8iUcGer3e2AAxnTSeSQVSXm8oPkSuchtF-oTiUzgZSsAy+jwfDAABZGEr-JIAfnpdLlcCCmJAOLxIX5tPyADoDSK6cQjWL5MwpTKhidRpVxtNyI1mst-urNcxHj8-kkkvkAAwfYgTWVJA7IuyOWLua6wby+So4OAQHRwABu4hE6ECpEdVBoIUoEQAFKmAJRJKOuOx0iCsHDwVj1L5wADUcBqtlMFGoGCebIIxdYpdsDmclbyKSg6AUwDpJDkcAABvNwhFF9Fx8d0QwznkLj6AYsWnMNCEYFBMxsdOJ8L9-jHAUtWivr1xb3QL+g7weH0fliuOAgCAeFxDZAOA9BQIRJIkSOIA)
+[TypeScript Playground](https://www.typescriptlang.org/play/?#code/JYWwDg9gTgLgBAbzjAnmApnAggZx+2AGjgEM8CYAVNdY1DbPYAcwDsSAjAG1uRrgCiARwCuJLnX4CAHjHSsAJjkkMAkqwDGXEQvTK+DAHIR4AXzgAzKBBBwA5GXywYMOwG4AUB4D03gLwBgUGMTjDArMwGegBcIRQAPABCAHxwQel+XggecFFwAAokwFDxABqpfnAA2qXEpQC6nrn0mAD6AIxpcbDxwmJc8YXF8Q52ycRVo8Sj9cnJTXmtAExduKHxxjC9ouKDRSWj49V20nbTp7NznqZZOYtdVXe5awlrLOzc6PGsIiAcBMR2ksAMxzQheXLPcg9GRyRQ4eJYKBQEgoeI4GBQcLMI4AeQ4ACt0BoYGCnt0tpterJ5EpEcjUejMdijgAldDMGRgObjCGQl49dRaHR6EYkOwAHzsHDO9nFZMhFPiQu0ugRoylMqlGllGrsOoVcEaHhuHmyzX4hl+rJIES+AFUwBgoHB0DT4XAfn8AdgNBpXe6lJ7fv8oFV6g9ZmlyY7nQG4UGsH7JjwIjAABZ2erk3IAfl9GhzcFiVpANrt8VjPqqADo60mNMQGyn5MwM1nZncFi04K1VtCtn1duTS+XmF9QeDFVUAAyA4hLbO5K4mry+DLBAVhCJRHBwCAWOAAN3EIhipAH1Aw8UoyQAFEeAJS5DeBLwaCCsDGerrAuAAajgdpPEcCgry+L1Q3vVhH08Hx-FfSp8igdAFGADQSDkOAAAMqRSbC0kQ24LQYPtKkeRUt22foNhMeJMTPI4LHEfBDShdYhwGKlmK4Vi6CgRjeUogdqN2KkOAgCAeFtI4JKk9AZKEo1rg8IA)
 
 ```ts
-import { type Assert, assertType, type Assignable, type Equal, type Extends, type Not } from 'asserttt';
+import { type Assert, assertType, type Assignable, type Equal, type Extends, type Includes, type Not } from 'asserttt';
 
 //========== Asserting types: Assert<B> ==========
 
@@ -60,7 +60,12 @@ import { type Assert, assertType, type Assignable, type Equal, type Extends, typ
 {
   type _ = [
     Assert<Assignable<number, 123>>,
-    Assert<Extends<'a', 'a'|'b'>>,
+
+    Assert<Extends<Array<string>, Object>>,
+    Assert<Not<Extends<Array<string>, RegExp>>>,
+
+    Assert<Includes<'a'|'b', 'a'>>,
+    Assert<Includes<'a'|'b'|'c', 'a'|'c'>>,
   ];
 }
 
@@ -97,8 +102,9 @@ assertType<number>(n);
 Comparing types:
 
 * `Equal<X, Y>`
-* `Extends<Sub, Sup>`
+* `Extends<Sub, Super>`
 * `Assignable<Target, Source>`
+* `Includes<Superset, Subset>`
 
 Boolean operations:
 
