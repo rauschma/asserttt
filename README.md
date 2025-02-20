@@ -118,7 +118,7 @@ Boolean operations:
 
 #### Naive solution
 
-The problem with a naive solution is that it fails for `any` (last line):
+The problem with a naive solution is that doesn’t always work (see last two lines):
 
 ```ts
 type Equal<X, Y> =
@@ -128,9 +128,12 @@ type Equal<X, Y> =
       : false
     : false
 ;
+
 type B1 = Equal<123, number>; // OK: false
 type B2 = Equal<['a', 'b'], ['a', 'b']>; // OK: true
-type B3 = Equal<any, 123>; // // not OK: boolean
+
+type B3 = Equal<any, 123>; // not OK: boolean
+type B4 = Equal<'a', 'a' | 'b'>; // not OK: boolean
 ```
 
 #### Proper solution
