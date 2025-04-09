@@ -124,16 +124,17 @@ type Equal<X, Y> =
   [IsAny<X>, IsAny<Y>] extends [true, true] ? true
   : [IsAny<X>, IsAny<Y>] extends [false, false] ? MutuallyAssignable<X, Y>
   : false
-type IsAny<T> = 0 extends (1 & T) ? true : false
+  ;
+type IsAny<T> = 0 extends (1 & T) ? true : false;
 ```
 
-#### `PedanticEqual`: a popular hack that is often too strict
+#### `PedanticEqual`: a popular hack with several downsides
 
 ```ts
 type PedanticEqual<X, Y> =
   (<T>() => T extends X ? 1 : 2) extends // (A)
   (<T>() => T extends Y ? 1 : 2) ? true : false // (B)
-;
+  ;
 ```
 
 It was suggested by Matt McCutchen ([source](https://github.com/Microsoft/TypeScript/issues/27024#issuecomment-421529650)). How does it work ([source](https://github.com/microsoft/TypeScript/issues/27024#issuecomment-510924206))?

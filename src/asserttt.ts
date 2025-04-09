@@ -23,7 +23,7 @@ export type Equal<X, Y> =
   [IsAny<X>, IsAny<Y>] extends [true, true] ? true
   : [IsAny<X>, IsAny<Y>] extends [false, false] ? MutuallyAssignable<X, Y>
   : false
-
+  ;
 
 /**
  * - The brackets around the left-hand sides of `extends` prevent
@@ -75,8 +75,8 @@ export type Includes<Superset, Subset> = [Subset] extends [Superset] ? true : fa
 export type Not<B extends boolean> =
   // `Equal` because want to avoid Not<any> being `false` or `true`
   Equal<B, true> extends true
-    ? false
-    : (Equal<B, false> extends true ? true : never)
+  ? false
+  : (Equal<B, false> extends true ? true : never)
   ;
 
 //========== Predicates: other ==========
@@ -84,4 +84,4 @@ export type Not<B extends boolean> =
 /**
  * - Source: https://stackoverflow.com/questions/49927523/disallow-call-with-any/49928360#49928360
  */
-export type IsAny<T> = 0 extends (1 & T) ? true : false
+export type IsAny<T> = 0 extends (1 & T) ? true : false;
