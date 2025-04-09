@@ -11,8 +11,6 @@ Table of contents:
 * [Usage](#usage)
 * [How does the code work?](#how-does-the-code-work)
 * [Related work](#related-work)
-* [Potential future additions](#potential-future-additions)
-* [Acknowledgements](#acknowledgements)
 
 ---
 
@@ -44,8 +42,6 @@ If a file contains type tests, it’s not enough to run it, we must also type-ch
 
 ## Usage
 
-[TypeScript Playground](https://www.typescriptlang.org/play/?#code/JYWwDg9gTgLgBAbzjAnmApnAggZx+2AGjgEM8CYAVNdY1DbPYAcwDsSAjAG1uRrgCiARwCuJLnX4CAHjHSsAJjkkMAkqwDGXEQvTK+DAHIR4AXzgAzKBBBwA5GXywYMOwG4AUB4D03gLwBgUGMTjDArMwGegBcIRQAPABCAHxwQel+XggecFFwAAokwFDxABqpfnAA2qXEpQC6nrn0mAD6AIxpcbDxwmJc8YXF8Q52ycRVo8Sj9cnJTXmtAExduKHxxjC9ouKDRSWj49V20nbTp7NznqZZOYtdVXe5awlrLOzc6PGsIiAcBMR2ksAMxzQheXLPcg9GRyRQ4eJYKBQEgoeI4GBQcLMI4AeQ4ACt0BoYGCnt0tpterJ5EpEcjUejMdijgAldDMGRgObjCGQl49dRaHR6EYkOwAHzsHDO9nFZMhFPiQu0ugRoylMqlGllGrsOoVcEaHhuHmyzX4hl+rJIES+AFUwBgoHB0DT4XAfn8AdgNBpXe6lJ7fv8oFV6g9ZmlyY7nQG4UGsH7JjwIjAABZ2erk3IAfl9GhzcFiVpANrt8VjPqqADo60mNMQGyn5MwM1nZncFi04K1VtCtn1duTS+XmF9QeDFVUAAyA4hLbO5K4mry+DLBAVhCJRHBwCAWOAAN3EIhipAH1Aw8UoyQAFEeAJS5DeBLwaCCsDGerrAuAAajgdpPEcCgry+L1Q3vVhH08Hx-FfSp8igdAFGADQSDkOAAAMqRSbC0kQ24LQYPtKkeRUt22foNhMeJMTPI4LHEfBDShdYhwGKlmK4Vi6CgRjeUogdqN2KkOAgCAeFtI4JKk9AZKEo1rg8IA)
-
 ```ts
 import { type Assert, assertType, type Assignable, type Equal, type Extends, type Includes, type Not } from 'asserttt';
 
@@ -53,8 +49,12 @@ import { type Assert, assertType, type Assignable, type Equal, type Extends, typ
 
 {
   type Pair<X> = [X, X];
-  type _1 = Assert<Equal<Pair<'a'>, ['a', 'a']>>;
-  type _2 = Assert<Not<Equal<Pair<'a'>, ['x', 'x']>>>;
+  type _1 = Assert<Equal<
+    Pair<'a'>, ['a', 'a']
+  >>;
+  type _2 = Assert<Not<Equal<
+    Pair<'a'>, ['x', 'x']
+  >>>;
 }
 
 {
@@ -69,39 +69,22 @@ import { type Assert, assertType, type Assignable, type Equal, type Extends, typ
   ];
 }
 
-{
-  type NumRange<Upper extends number, Acc extends number[] = []> =
-    Upper extends Acc['length']
-      ? Acc
-      : NumRange<Upper, [...Acc, Acc['length']]>
-  ;
-  type _ = Assert<Equal<
-    NumRange<3>,
-    [0, 1, 2]
-  >>;
-}
-
 //========== Asserting types of values: assertType<T>(v)  ==========
 
 const n = 3 + 1;
 assertType<number>(n);
-
-//========== Predicate `Not<B>` ==========
-
-{
-  type _ = [
-    Assert<Equal<Not<true>, false>>,
-    Assert<Equal<Not<false>, true>>,
-    Assert<Equal<Not<boolean>, boolean>>,
-  ];
-}
 ```
 
-### Included _predicates_ (boolean result)
+### Included _predicates_ (boolean results)
+
+Equality:
+
+* `Equal<X, Y>`
+* `MutuallyAssignable<X, Y>`
+* `PedanticEqual<X, Y>`
 
 Comparing types:
 
-* `Equal<X, Y>`
 * `Extends<Sub, Super>`
 * `Assignable<Target, Source>`
 * `Includes<Superset, Subset>`
@@ -109,43 +92,48 @@ Comparing types:
 Boolean operations:
 
 * `Not<B>`
+* `IsAny<T>`
 
 <!-- ############################################################ -->
 
 ## How does the code work?
 
-### Comparing types
+<!-- ======================================== -->
 
-#### Naive solution
+### Determining if two types are equal
 
-The problem with a naive solution is that doesn’t always work (see last two lines):
+#### `MutuallyAssignable`
 
 ```ts
-type Equal<X, Y> =
-  X extends Y
-    ? Y extends X
-      ? true
-      : false
-    : false
-;
-
-type B1 = Equal<123, number>; // OK: false
-type B2 = Equal<['a', 'b'], ['a', 'b']>; // OK: true
-
-type B3 = Equal<any, 123>; // not OK: boolean
-type B4 = Equal<'a', 'a' | 'b'>; // not OK: boolean
+type MutuallyAssignable<X, Y> =
+  [X] extends [Y]
+  ? ([Y] extends [X] ? true : false)
+  : false
+  ;
 ```
 
-#### Proper solution
+* The brackets around the left-hand sides of `extends` prevent distributivity over `X` and `Y`.
+* Almost what we want for checking equality, but `any` is equal to all types – which is problematic when testing types.
 
-In contrast, the following non-intuitive solution works even for `any`:
+#### `Equal`: like `MutuallyAssignable` but `any` is only equal to itself
+
+This `Equal` predicate works well for many use cases:
 
 ```ts
 type Equal<X, Y> =
+  [IsAny<X>, IsAny<Y>] extends [true, true] ? true
+  : [IsAny<X>, IsAny<Y>] extends [false, false] ? MutuallyAssignable<X, Y>
+  : false
+type IsAny<T> = 0 extends (1 & T) ? true : false
+```
+
+#### `PedanticEqual`: a popular hack that is often too strict
+
+```ts
+type PedanticEqual<X, Y> =
   (<T>() => T extends X ? 1 : 2) extends // (A)
   (<T>() => T extends Y ? 1 : 2) ? true : false // (B)
 ;
-type B = Equal<any, 123>; // OK: false
 ```
 
 It was suggested by Matt McCutchen ([source](https://github.com/Microsoft/TypeScript/issues/27024#issuecomment-421529650)). How does it work ([source](https://github.com/microsoft/TypeScript/issues/27024#issuecomment-510924206))?
@@ -164,6 +152,10 @@ Since `T` does not have a value, both conditional types are _deferred_. Assignab
 
 Thanks to #1, `X` and `Y` are compared precisely.
 
+**This hack has several downsides:** See [`test/pedantic-equal_test.ts`](test/pedantic-equal_test.ts) for more information.
+
+<!-- ======================================== -->
+
 ### Asserting
 
 ```ts
@@ -171,6 +163,8 @@ type Assert<_T extends true> = void;
 ```
 
 Alas, we can’t conditionally produce errors at the type level. That’s why we need to resort to a type parameter whose `extends` constraint requires it to be assignable to `true`.
+
+(Idea by Blaine Bublitz)
 
 <!-- ############################################################ -->
 
@@ -188,17 +182,3 @@ Alas, we can’t conditionally produce errors at the type level. That’s why we
   * Implements boolean NOT via a helper type `Not` (vs. two versions of the same utility type).
 
 * [eslint-plugin-expect-type](https://www.npmjs.com/package/eslint-plugin-expect-type) supports an elegant notation but requires a special tool (eslint) for checking.
-
-<!-- ############################################################ -->
-
-## Potential future additions
-
-* type-challenges has [several interesting utility types](https://github.com/type-challenges/type-challenges/blob/main/utils/index.d.ts). These look useful but I’m not yet sure how:
-  * `Debug`
-  * `IsAny`
-
-<!-- ############################################################ -->
-
-## Acknowledgements
-
-* `Assert` is based on code by Blaine Bublitz.

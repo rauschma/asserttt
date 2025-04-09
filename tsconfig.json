@@ -1,33 +1,25 @@
 {
   "include": ["src/**/*", "test/**/*"],
   "compilerOptions": {
-    // Specify explicitly (don’t derive from source file paths):
+    // Specified explicitly (not derived from source file paths)
     "rootDir": ".",
     "outDir": "dist",
 
-    //===== Output: JavaScript =====
-    "target": "ES2023",
-    "module": "Node16", // sets up "moduleResolution"
+    //========== Target and module ==========
+    // Nothing is ever transpiled
+    "target": "ESNext", // sets up "lib" accordingly
+    "module": "NodeNext", // sets up "moduleResolution"
+    // Don’t check .d.ts files
+    "skipLibCheck": true,
     // Emptily imported modules must exist
     "noUncheckedSideEffectImports": true,
-    "sourceMap": true, // .js.map files
+    // Allow importing JSON
+    "resolveJsonModule": true,
 
-    //========== Compiling TS with tools other than tsc ==========
-    //----- Helps with emitting .js -----
-    // Enforces keyword `type` for type imports etc.
-    "verbatimModuleSyntax": true, // implies "isolatedModules"
-    // Forbids non-JavaScript language constructs such as
-    // JSX, enums, constructor parameter properties and namespaces.
-    // Important for type stripping.
-    // "erasableSyntaxOnly": true, // TS 5.8+
-
-    //----- Helps with emitting .d.ts -----
-    // - Forbids inferred return types of exported functions etc.
-    // - Only allowed if `declaration` or `composite` are true
-    "isolatedDeclarations": true,
-
-    //===== Type checking =====
-    "strict": true, // activates several useful options
+    //========== Type checking ==========
+    // Essential: activates several useful options
+    "strict": true,
+    // Beyond "strict": less important
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -35,12 +27,17 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
 
-    //===== Output: declarations =====
+    //========== Emitted files ==========
+    //----- Output: .js -----
+    "sourceMap": true, // .js.map files
+    //----- Output: .d.ts -----
     "declaration": true, // .d.ts files
-    // “Go to definition” jumps to TS source etc.:
+    // “Go to definition” jumps to TS source etc.
     "declarationMap": true, // .d.ts.map files
-
-    //===== Miscellaneous =====
-    "lib": ["ES2023"], // don’t provide types for DOM
+    // - Enforces constraints that enable efficient .d.ts generation:
+    //   no inferred return types for exported functions etc.
+    // - Even though this option would be generally useful, it requires
+    //   that `declaration` and/or `composite` are true.
+    "isolatedDeclarations": true,
   }
 }
