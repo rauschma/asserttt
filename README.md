@@ -1,14 +1,14 @@
 # asserttt: minimal API for testing types
 
-**Experimental API, currently in testing. Feedback welcome!**
-
 ---
 
 Table of contents:
 
-* [About asserttt](#about-asserttt)
+* [Installation](#installation)
+* [Use cases](#use-cases)
 * [Complementary tools](#complementary-tools)
 * [Usage](#usage)
+* [API](#api)
 * [How does the code work?](#how-does-the-code-work)
 * [Related work](#related-work)
 
@@ -16,16 +16,22 @@ Table of contents:
 
 <!-- ############################################################ -->
 
-## About asserttt
+## Installation
 
 ```js
 npm install asserttt
 ```
 
-* Use cases:
-  * Documenting types in code examples (e.g. via [Markcheck](https://github.com/rauschma/markcheck))
-  * Testing utility types
-* No non-dev dependencies
+`asserttt` has no non-dev dependencies!
+
+<!-- ############################################################ -->
+
+## Use cases
+
+* Testing types
+* Documenting TypeScript with code examples (e.g. via [Markcheck](https://github.com/rauschma/markcheck))
+* Support for TypeScript exercises, such as the ones provided by [`Type<Challenge[]>`](https://tsch.js.org).
+* [Testing that related types are consistent](https://exploringjs.com/ts/book/ch_testing-types.html#type-level-assertions-in-normal-code) in normal code
 
 <!-- ############################################################ -->
 
@@ -35,7 +41,9 @@ If a file contains type tests, it’s not enough to run it, we must also type-ch
 
 * [tsx (TypeScript Execute)](https://www.npmjs.com/package/tsx) is a tool that type-checks files before running them.
   * It works well with the Mocha test runner: [example setup](https://github.com/mochajs/mocha-examples/tree/main/packages/typescript-tsx-esm-import)
-* [ts-expect-error](https://www.npmjs.com/package/ts-expect-error) additionally checks if each `@ts-expect-error` annotation prevents the right kind of error.
+* [ts-expect-error](https://www.npmjs.com/package/ts-expect-error) performs two tasks:
+  * Checking if each `@ts-expect-error` annotation prevents the right kind of error
+  * Optional: reporting errors detected by TypeScript
 * [Markcheck](https://github.com/rauschma/markcheck) tests Markdown code blocks.
 
 <!-- ############################################################ -->
@@ -75,6 +83,15 @@ const n = 3 + 1;
 assertType<number>(n);
 ```
 
+<!-- ############################################################ -->
+
+## API
+
+### Asserting
+
+* `Assert<B>`
+* `assertType<T>(value)`
+
 ### Included _predicates_ (boolean results)
 
 Equality:
@@ -83,16 +100,16 @@ Equality:
 * `MutuallyAssignable<X, Y>`
 * `PedanticEqual<X, Y>`
 
-Comparing types:
+Comparing/detecting types:
 
 * `Extends<Sub, Super>`
 * `Assignable<Target, Source>`
 * `Includes<Superset, Subset>`
+* `IsAny<T>`
 
 Boolean operations:
 
 * `Not<B>`
-* `IsAny<T>`
 
 <!-- ############################################################ -->
 
@@ -105,14 +122,12 @@ Boolean operations:
 #### `MutuallyAssignable`
 
 ```ts
-type MutuallyAssignable<X, Y> =
-  [X] extends [Y]
-  ? ([Y] extends [X] ? true : false)
-  : false
+export type MutuallyAssignable<X, Y> =
+  [X, Y] extends [Y, X] ? true : false
   ;
 ```
 
-* The brackets around the left-hand sides of `extends` prevent distributivity over `X` and `Y`.
+* The brackets on the left-hand side of `extends` prevent distributivity.
 * Almost what we want for checking equality, but `any` is equal to all types – which is problematic when testing types.
 
 #### `Equal`: like `MutuallyAssignable` but `any` is only equal to itself
@@ -127,6 +142,9 @@ type Equal<X, Y> =
   ;
 type IsAny<T> = 0 extends (1 & T) ? true : false;
 ```
+
+* [Explanation of `Equal<X, Y>`](https://exploringjs.com/ts/book/ch_testing-types.html#checking-type-equality)
+* [Explanation of `IsAny<T>`](https://exploringjs.com/ts/book/ch_testing-types.html#checking-if-type-is-any).
 
 #### `PedanticEqual`: a popular hack with several downsides
 
