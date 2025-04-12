@@ -26,13 +26,11 @@ export type Equal<X, Y> =
   ;
 
 /**
- * - The brackets around the left-hand sides of `extends` prevent
- *   distributivity over `X` and `Y`.
+ * - The brackets on the left-hand side of `extends` prevent
+ *   distributivity.
  */
 export type MutuallyAssignable<X, Y> =
-  [X] extends [Y]
-  ? ([Y] extends [X] ? true : false)
-  : false
+  [X, Y] extends [Y, X] ? true : false
   ;
 
 /**

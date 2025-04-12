@@ -16,10 +16,10 @@ import { type Assert, type Equal, type MutuallyAssignable, type Not } from 'asse
   // - `MutuallyAssignable` considers `any` to be equal to other types.
   // - `Equal` doesn’t.
   type _ = [
-    Assert<MutuallyAssignable<any, number>>,
-    Assert<MutuallyAssignable<number, any>>,
     Assert<Not<Equal<any, number>>>,
     Assert<Not<Equal<number, any>>>,
+    Assert<MutuallyAssignable<any, number>>,
+    Assert<MutuallyAssignable<number, any>>,
   ];
 }
 
